@@ -1,18 +1,31 @@
 import React from "react";
 import Results from "./Results";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { useRoutes, useNavigate } from "react-router-dom";
 
 export const Routes = () => {
-  return (
-    <div className="p-4">
-      <Switch>
-        <Route exact path="/">
-          <Redirect to="/search"></Redirect>
-        </Route>
-        <Route path={["/search", "/images", "news", "/videos"]}>
-          <Results></Results>
-        </Route>
-      </Switch>
-    </div>
-  );
+  const navigate = useNavigate();
+  const routes = useRoutes([
+    {
+      path: "/",
+      action: () => navigate("/search"),
+    },
+    {
+      path: "/search",
+      element: <Results />,
+    },
+    {
+      path: "/images",
+      element: <Results />,
+    },
+    {
+      path: "/news",
+      element: <Results />,
+    },
+    {
+      path: "/videos",
+      element: <Results />,
+    },
+  ]);
+
+  return <div className="p-4">{routes}</div>;
 };

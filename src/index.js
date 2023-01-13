@@ -3,12 +3,15 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./input.css";
 import { BrowserRouter as Router } from "react-router-dom";
+import { ResultContextProvider } from "./contexts/ResusltContextProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Router>
-    <App />
-  </Router>
+  <ResultContextProvider>
+    <Router>
+      <App />
+    </Router>
+  </ResultContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
