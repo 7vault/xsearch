@@ -25,7 +25,7 @@ const Results = () => {
     case "/search":
       return (
         <div className="flex flex-wrap justify-between space-y-6 sm:px-56">
-          {results?.results?.map(({ link, title, description }, i) => (
+          {results?.map(({ link, title, description }, i) => (
             <div key={i} className="md:w2/5 w-full">
               <a href={link} target="_blank" rel="noreffer">
                 <p className="text-sm">
@@ -43,26 +43,24 @@ const Results = () => {
     case "/images":
       return (
         <div className="flex flex-wrap justify-center items-center">
-          {results?.image_results?.map(
-            ({ image, link: { href, title } }, i) => (
-              <a
-                className="sm:p-3 p-5"
-                href={href}
-                target="_blank"
-                rel="noreffer"
-                key={i}
-              >
-                <img src={image?.src} alt={title} loading="lazy"></img>
-                <p className="w-36 break-words text-sm mt-2">{title}</p>
-              </a>
-            )
-          )}
+          {results?.map(({ image, link: { href, title } }, i) => (
+            <a
+              className="sm:p-3 p-5"
+              href={href}
+              target="_blank"
+              rel="noreffer"
+              key={i}
+            >
+              <img src={image?.src} alt={title} loading="lazy"></img>
+              <p className="w-36 break-words text-sm mt-2">{title}</p>
+            </a>
+          ))}
         </div>
       );
     case "/news":
       return (
         <div className="flex flex-wrap justify-between space-y-6 sm:px-56 items-center">
-          {results?.entries?.map(({ links, title, id, source }) => (
+          {results?.map(({ links, title, id, source }) => (
             <div key={id} className="md:w2/5 w-full">
               <a
                 href={links?.[0].href}
@@ -88,8 +86,21 @@ const Results = () => {
           ))}
         </div>
       );
-    case "/search":
-      return "SEARCH";
+    case "/videos":
+      return (
+        <div className="flex flex-wrap">
+          {results.map((video, i) => (
+            <div key={i} className="p-2">
+              <ReactPlayer
+                url={video.additional_links?.[0].href}
+                controls
+                width="355px"
+                height="200px"
+              ></ReactPlayer>
+            </div>
+          ))}
+        </div>
+      );
 
     default:
       break;
