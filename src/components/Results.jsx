@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import ReactPlayer from "react-player";
 import { Loading } from "./Loading.jsx";
 
 import { useResultContext } from "../contexts/ResusltContextProvider";
@@ -11,97 +10,70 @@ const Results = () => {
   useEffect(() => {
     if (searchTerm) {
       console.log(typeof results);
-      if (location.pathname === "/videos") {
-        getResults(`/search?query=${searchTerm} videos`);
+      if (location.pathname === "/NewsSearchAPI") {
+        getResults(
+          `/search${location.pathname}?q=${searchTerm}&pageNumber=1&pageSize=40&autoCorrect=true`
+        );
       } else {
-        getResults(`${location.pathname}?query=${searchTerm}&num=40`);
+        getResults(
+          `/Search${location.pathname}?q=${searchTerm}&pageNumber=1&pageSize=40&autoCorrect=true`
+        );
       }
     }
   }, [searchTerm, location.pathname]);
 
   if (isLoading) return <Loading />;
-  console.log(location.pathname);
 
   switch (location.pathname) {
-    case "/search":
+    case "/WebSearchAPI":
       return (
         <div className="flex flex-wrap justify-between space-y-6 sm:px-56">
-          {results?.map(({ link, title, description }, i) => (
-            <div key={i} className="md:w2/5 w-full">
-              <a href={link} target="_blank" rel="noreffer">
+          {results?.map(({ id, url, title, body }) => (
+            <div key={id} className="md:w2/5 w-full">
+              <a href={url} target="_blank" rel="noreffer">
                 <p className="text-sm">
-                  {link.length > 30 ? link.substring(0, 30) : link}
+                  {url.length > 30 ? url.substring(0, 30) : url}
                 </p>
                 <p className="text-lg hover:underline dark:text-blue-300 text-blue-700 ">
                   {title}
                 </p>
                 <p className="text-sm hover:text-white-500 dark:text-white-200 text-dark-200">
-                  {description}
+                  {body}
                 </p>
               </a>
             </div>
           ))}
         </div>
       );
-    case "/images":
+    case "/ImageSearchAPI":
       return (
-        <div className="flex flex-wrap justify-center items-center">
-          {results?.map(({ image, link: { href, title } }, i) => (
+        <div className="grid grid-cols-4 h-28 justify-center items-center">
+          {results?.map(({ url, title, webpageUrl }, i) => (
             <a
               className="sm:p-3 p-5"
-              href={href}
+              href={webpageUrl}
               target="_blank"
               rel="noreffer"
               key={i}
             >
-              <img src={image?.src} alt={title} loading="lazy"></img>
+              <img src={url} alt={title} loading="lazy"></img>
               <p className="w-36 break-words text-sm mt-2">{title}</p>
             </a>
           ))}
         </div>
       );
-    case "/news":
+    case "/NewsSearchAPI":
       return (
-        <div className="flex flex-wrap justify-between space-y-6 sm:px-56 items-center">
-          {results?.map(({ links, title, id, source }) => (
-            <div key={id} className="md:w2/5 w-full">
-              <a
-                href={links?.[0].href}
-                target="_blank"
-                rel="noreffer"
-                className="hover:underline"
-              >
+        <div className=" grid grid-cols-4 sm:grid-col-1 md:grid-cols-3 gap-5   sm:px-56 ">
+          {results?.map(({ url, title, id, description, image }) => (
+            <div key={id} className="w-full border-1 rounded shadow-lg">
+              <a href={url} target="_blank" rel="noreffer">
+                <img src={image.url} alt={title} loading="lazy"></img>
                 <p className="text-lg hover:underline dark:text-blue-300 text-blue-700 ">
                   {title}
                 </p>
-                <div className="flex gap-4">
-                  <a
-                    className=""
-                    href={source?.href}
-                    target="_blank"
-                    rel="noreffer"
-                  >
-                    {source?.href}
-                  </a>
-                </div>
+                <div className="flex gap-4">{description}</div>
               </a>
-            </div>
-          ))}
-        </div>
-      );
-    case "/videos":
-      return (
-        <div className="flex flex-wrap">
-          {results.map((video, i) => (
-            <div key={i} className="p-2">
-              {video?.additional_links?.[0]?.href && (
-                <ReactPlayer
-                  url={video.additional_links?.[0].href}
-                  controls
-                  width="355px"
-                  height="200px"
-                ></ReactPlayer>
-              )}
             </div>
           ))}
         </div>

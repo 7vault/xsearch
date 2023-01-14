@@ -7,22 +7,18 @@ export const Routes = () => {
   const routes = useRoutes([
     {
       path: "/",
-      action: () => navigate("/search"),
+      action: () => navigate("/WebSearchAPI"),
     },
     {
-      path: "/search",
+      path: "/WebSearchAPI",
       element: <Results />,
     },
     {
-      path: "/images",
+      path: "/ImageSearchAPI",
       element: <Results />,
     },
     {
-      path: "/news",
-      element: <Results />,
-    },
-    {
-      path: "/videos",
+      path: "/NewsSearchAPI",
       element: <Results />,
     },
   ]);
