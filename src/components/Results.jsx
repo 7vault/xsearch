@@ -10,10 +10,11 @@ const Results = () => {
 
   useEffect(() => {
     if (searchTerm) {
+      console.log(typeof results);
       if (location.pathname === "/videos") {
-        getResults(`/search/q=${searchTerm} videos`);
+        getResults(`/search?query=${searchTerm} videos`);
       } else {
-        getResults(`${location.pathname}/q=${searchTerm}&num=40`);
+        getResults(`${location.pathname}?query=${searchTerm}&num=40`);
       }
     }
   }, [searchTerm, location.pathname]);
@@ -34,7 +35,9 @@ const Results = () => {
                 <p className="text-lg hover:underline dark:text-blue-300 text-blue-700 ">
                   {title}
                 </p>
-                <p className="text-sm hover:text-white-500 dark:text-white-200 text-dark-200"></p>
+                <p className="text-sm hover:text-white-500 dark:text-white-200 text-dark-200">
+                  {description}
+                </p>
               </a>
             </div>
           ))}
@@ -91,12 +94,14 @@ const Results = () => {
         <div className="flex flex-wrap">
           {results.map((video, i) => (
             <div key={i} className="p-2">
-              <ReactPlayer
-                url={video.additional_links?.[0].href}
-                controls
-                width="355px"
-                height="200px"
-              ></ReactPlayer>
+              {video?.additional_links?.[0]?.href && (
+                <ReactPlayer
+                  url={video.additional_links?.[0].href}
+                  controls
+                  width="355px"
+                  height="200px"
+                ></ReactPlayer>
+              )}
             </div>
           ))}
         </div>

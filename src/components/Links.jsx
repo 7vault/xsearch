@@ -10,14 +10,15 @@ const links_array = [
 export const Links = () => {
   return (
     <div className="flex sm:justify-around justify-between items-center mt-4">
-      {links_array.map(({ url, text }) => (
-        <NavLink
-          to={url}
-          className="m-2 mb-0"
-          activeClassName="text-blue-700 border-b-2 dark:text-white-200"
+      {links_array.map(({ url, text }, i) => (
+        <div
+          key={i}
+          className=" bg-gray-800 text-gray-200 rounded-full text-white-200 mt-5 hover:overline"
         >
-          {text}
-        </NavLink>
+          <NavLink to={url} className="m-2 mb-0">
+            {text}
+          </NavLink>
+        </div>
       ))}
     </div>
   );
